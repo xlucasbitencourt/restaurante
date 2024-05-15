@@ -1,6 +1,7 @@
 package lucas.restaurante.service;
 
 import lucas.restaurante.dto.PratoDto;
+import lucas.restaurante.model.Prato;
 import lucas.restaurante.repository.PratoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,10 @@ public class PratoService {
             pratos.add(prato.toDto());
         });
         return pratos;
+    }
+
+    public PratoDto salvarPrato(PratoDto novoPrato) {
+        Prato pratoSalvo = pratoRepository.save(novoPrato.toEntity());
+        return pratoSalvo.toDto();
     }
 }
