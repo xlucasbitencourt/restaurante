@@ -21,8 +21,31 @@ public class PratoController {
         return ResponseEntity.ok(pratoService.obterTodos());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PratoDto> obterPratoPorId(@PathVariable Long id) {
+        return pratoService.obterPratoPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<PratoDto> salvarPrato(@Valid @RequestBody PratoDto novoPrato){
         return new ResponseEntity<PratoDto>(pratoService.salvarPrato(novoPrato), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PratoDto> atualizarPrato(@PathVariable Long id, @Valid @RequestBody PratoDto pratoAlterado) {
+        return pratoService.atualizarPrato(id, pratoAlterado)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
+        if(pratoService.excluirPrato(id)){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

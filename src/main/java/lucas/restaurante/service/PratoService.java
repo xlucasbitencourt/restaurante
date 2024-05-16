@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PratoService {
@@ -22,8 +23,35 @@ public class PratoService {
         return pratos;
     }
 
+    public Optional<PratoDto> obterPratoPorId(Long id) {
+        Optional<Prato> prato = pratoRepository.findById(id);
+
+        return prato.map(Prato::toDto);
+
+    }
+
     public PratoDto salvarPrato(PratoDto novoPrato) {
         Prato pratoSalvo = pratoRepository.save(novoPrato.toEntity());
         return pratoSalvo.toDto();
+    }
+
+    public Optional<PratoDto> atualizarPrato(Long id, PratoDto pratoAlterado) {
+        Prato pratoEntity = pratoAlterado.toEntity();
+
+        if (pratoRepository.existsById(id)) {
+            pratoEntity.setId(id);
+            pratoRepository.save(pratoEntity);
+            return Optional.of(pratoEntity.toDto());
+        }
+        return Optional.empty();
+    }
+
+    public boolean excluirPrato(Long id) {
+        if(pratoRepository.existsById(id)){
+            pratoRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
     }
 }
