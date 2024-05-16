@@ -27,7 +27,14 @@ public class PratoService {
         Optional<Prato> prato = pratoRepository.findById(id);
 
         return prato.map(Prato::toDto);
+    }
 
+    public List<PratoDto> obterPratosPorNome(String nome) {
+        List<PratoDto> pratos = new ArrayList<>();
+        pratoRepository.findByNomeContainingIgnoreCase(nome).forEach(prato -> {
+            pratos.add(prato.toDto());
+        });
+        return pratos;
     }
 
     public PratoDto salvarPrato(PratoDto novoPrato) {

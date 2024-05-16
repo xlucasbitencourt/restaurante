@@ -28,6 +28,11 @@ public class PratoController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<List<PratoDto>> obterPratosPorNome(@PathVariable String nome) {
+        return ResponseEntity.ok(pratoService.obterPratosPorNome(nome));
+    }
+
     @PostMapping
     public ResponseEntity<PratoDto> salvarPrato(@Valid @RequestBody PratoDto novoPrato){
         return new ResponseEntity<PratoDto>(pratoService.salvarPrato(novoPrato), HttpStatus.CREATED);

@@ -30,6 +30,22 @@ public class ClienteService {
         return cliente.map(Cliente::toDto);
     }
 
+    public List<ClienteDto> obterClientesPorNome(String nome) {
+        List<ClienteDto> clientes = new ArrayList<>();
+        clienteRepository.findByNomeContainingIgnoreCase(nome).forEach(cliente -> {
+            clientes.add(cliente.toDto());
+        });
+        return clientes;
+    }
+
+    public List<ClienteDto> obterClientesPorSobrenome(String nome) {
+        List<ClienteDto> clientes = new ArrayList<>();
+        clienteRepository.findBySobrenomeContainingIgnoreCase(nome).forEach(cliente -> {
+            clientes.add(cliente.toDto());
+        });
+        return clientes;
+    }
+
     public ClienteDto salvarCliente(ClienteDto novoCliente) {
         Cliente clienteSalvo = clienteRepository.save(novoCliente.toEntity());
         return clienteSalvo.toDto();

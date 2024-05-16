@@ -26,6 +26,16 @@ public class ClienteController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<List<ClienteDto>> obterClientesPorNome(@PathVariable String nome) {
+        return ResponseEntity.ok(clienteService.obterClientesPorNome(nome));
+    }
+
+    @GetMapping("/sobrenome/{nome}")
+    public ResponseEntity<List<ClienteDto>> obterClientesPorNomeOuSobrenome(@PathVariable String nome) {
+        return ResponseEntity.ok(clienteService.obterClientesPorSobrenome(nome));
+    }
+
     @PostMapping
     public ResponseEntity<ClienteDto> salvarCliente(@RequestBody ClienteDto novoCliente){
         return ResponseEntity.ok(clienteService.salvarCliente(novoCliente));
